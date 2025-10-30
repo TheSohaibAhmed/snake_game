@@ -18,4 +18,4 @@ Ans. briefly, yes.
 # *CONTROLS*
 - Arrow keys! 
 - Spacebar: pauses game
-- "V" drops the first food. 
+- "F" drops the first food.  

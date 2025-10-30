@@ -17,10 +17,11 @@ export default function App() {
 // EAT IN RESPONSE TO FOOD: Collision detection;
 // ADD DIFFICULTY: SPEED;
 // ADD MOBILE SUPPORT
+const default_state = {length: 1, is_paused: false, has_started: false, food: {x:0, y:0}, bonus_food:  {x:0, y:0, active:false}, direction: "r", pending_direction:"r", speed: 80, snake: [], grid: []}
 
 function Table() {
   const [isPaused, setPaused] = useLocalStorageListener("pause", false);
-  const state = useRef({length: 1, is_paused: false, food: {x:0, y:0}, bonus_food:  {x:0, y:0, active:false}, direction: "r", pending_direction:"r", speed: 80, snake: [], grid: []});
+  const state = useRef(default_state);
   const [speed, setSpeed] = useState(80);
   const size =  useRef(40);
   const head = useRef({x: 0, y: 0});
@@ -112,7 +113,11 @@ function Table() {
       state.current.snake.shift(); // update state;
       state.current.snake.push(new_head); // update state;
       setHead(new_head); // update state
-      // Post-state-change: add food. 
+      // Post-state-change: add food.
+      if (!state.current.has_started) {
+        feed();
+        state.current.has_started = true;
+      } 
     }
 
   }
@@ -153,9 +158,8 @@ function Table() {
   
   length = 3;
 
-  //Make grid;
-  
 
+// Key events
  useLayoutEffect(() => {
     window.addEventListener("keydown", handler_keypress);
     return () => window.removeEventListener("keydown", handler_keypress);
@@ -200,19 +204,16 @@ function Table() {
         let time_elapsed = time - start; // calc time.
         if (time_elapsed >= interval) { move();  start = time; } // run when interval elapsed
         ID_animation = requestAnimationFrame(animate_movement); // we're calling ourselves... hmm.
+        
     };
 
      // => Init. animation. 
     if (!state.current.is_paused) ID_animation = requestAnimationFrame(animate_movement);
     return () => cancelAnimationFrame(ID_animation); // cleanup.
   }, [move]);
-  // useEffect(() => {
-  //    console.log("Is open @ app", isPaused)
- 
-  //   state.current.is_paused = isPaused
-  // }, [isPaused])
 
- 
+
+  //Make grid;
 
  function render_rows({_array, _ref_grid}) {
     return _array.map((r, ri) => {
