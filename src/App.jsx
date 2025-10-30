@@ -2,6 +2,7 @@ import {  useLayoutEffect, useMemo } from "react";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import Modal from "./components/modal.jsx";
 import useLocalStorageListener from "./components/useLocalStorage.js";
+import MobileController from "./components/mobileTiltController.jsx";
   let css_col = " w-3 h-3 bg-gray-600 border-2 border-gray-600 transition transition-all duration-[50] ease-in-out";
 
 export default function App() {
@@ -84,6 +85,17 @@ function Table() {
     if (key === "F") feed();
     if (key === "R") reset();
   }
+  function handleTilt(e) {
+    const {alpha, beta, gamma} = e;
+    
+
+    if (beta > 10) window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+    if (beta < -10) window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
+    if (gamma > 10) window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
+    if (gamma < -10) window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+
+    
+  }
   function move () {
   
     if (!!state.current.is_paused) return;
@@ -160,7 +172,7 @@ function Table() {
   }
   function reset () {
     set_ended(false)
-   window.location.reload()
+    window.location.reload()
   }
   function start_game () {
    
@@ -267,7 +279,7 @@ function Table() {
   </tbody>
     </table>
      <Modal isPaused={state.current.is_paused} pause_play={pause_play} reset={reset} ended={ended} state={state.current}/>
-    
+      <MobileController onTilt={handleTilt} />
     </div>
   );
 } 

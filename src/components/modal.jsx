@@ -1,3 +1,4 @@
+"use client"
 import { useRef, useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import useLocalStorageListener from "./useLocalStorage";
