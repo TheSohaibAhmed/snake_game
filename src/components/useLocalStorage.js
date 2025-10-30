@@ -5,10 +5,11 @@ export default function useLocalStorageListener(key, defaultValue) {
     const readValue = useCallback(() => {
     try {
       const item = localStorage.getItem(key);
-      if (item === null && defaultValue !== undefined) {
-        localStorage.setItem(key, defaultValue);
-        return defaultValue
-      }
+      // if (item === null && defaultValue !== undefined) {
+        
+      //   localStorage.setItem(key, defaultValue);
+      //   return defaultValue
+      // }
       return item !== null ? JSON.parse(item) : defaultValue;
     } catch {
       return defaultValue;
@@ -31,6 +32,7 @@ export default function useLocalStorageListener(key, defaultValue) {
 
   // sync localStorage & state
   const setAndStore = useCallback((new_value) => {
+   
     function setter (prev_value) {
           const value = typeof new_value === "function"? new_value(prev):new_value;
           try {localStorage.setItem(key, JSON.stringify(value))}

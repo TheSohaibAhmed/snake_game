@@ -20,13 +20,15 @@ export default function App() {
 const default_state = {length: 1, is_paused: false, has_started: false, food: {x:0, y:0}, bonus_food:  {x:0, y:0, active:false}, direction: "r", pending_direction:"r", speed: 80, snake: [], grid: []}
 
 function Table() {
-  const [isPaused, setPaused] = useLocalStorageListener("pause", false);
+  const [ended, set_ended] = useState(false)
+  const [isPaused, setPaused] = useLocalStorageListener("pause", true);
+  
   const state = useRef(default_state);
   const [speed, setSpeed] = useState(80);
   const size =  useRef(40);
   const head = useRef({x: 0, y: 0});
   const setHead = (val) => head.current = val;
- 
+  
   // DEFINE
 
   let array = useMemo(() =>  Array(size.current).fill(undefined))
@@ -77,12 +79,13 @@ function Table() {
     if (key ===  "ARROWUP" ||key === "8")   state.current.pending_direction = "u";  
     if (key === "V") eat();
     if (key === "B") faster();
-    if (key === " "|| key === "ESCAPE") pause_play()
-    if (key === " "|| key === "ESCAPE") console.log(state.current)
+    if ( key === "ESCAPE") pause_play()
+    //if (key === " "|| key === "ESCAPE") console.log(state.current)
     if (key === "F") feed();
+    if (key === "R") reset();
   }
   function move () {
-    
+  
     if (!!state.current.is_paused) return;
     let key = state.current.direction;
     let pending = state.current.pending_direction;
@@ -122,6 +125,7 @@ function Table() {
 
   }
   function occupyBlock(x, y) {
+     
       state.current.grid[y][x].occupied = true;
       let block = grid_ref?.current[y][x];
       if (state.current.grid[y][x].has_food) {
@@ -133,8 +137,8 @@ function Table() {
       } else {
          if (block?.className?.includes("!bg-green-500")) {
         block.className = (css_col + " !bg-red-500 animate-pulse");       
-        state.current.is_paused = true;
-  
+        
+        set_ended(true)  
         return;
       }
         if (block?.className)  block.className +=(" !bg-green-500");
@@ -154,9 +158,19 @@ function Table() {
       state.current.is_paused = ! state.current.is_paused
       setPaused(state.current.is_paused)
   }
+  function reset () {
+    set_ended(false)
+   window.location.reload()
+  }
+  function start_game () {
+   
+   
+    if (state.current.is_paused) pause_play()
+
+  }
   //Initializations
   
-  length = 3;
+ 
 
 
 // Key events
@@ -211,6 +225,15 @@ function Table() {
     if (!state.current.is_paused) ID_animation = requestAnimationFrame(animate_movement);
     return () => cancelAnimationFrame(ID_animation); // cleanup.
   }, [move]);
+  
+  useEffect(() => {
+    console.log('happened')
+    if (ended) {
+      state.current.is_paused=true;
+      setPaused(false)
+    }
+  }, [ended, isPaused, setPaused])
+  
 
 
   //Make grid;
@@ -228,7 +251,8 @@ function Table() {
     );
   });
  }
- const Rows = useMemo( () => render_rows({_array: array, _ref_grid: grid_ref}));
+//  const Rows = useMemo( () => render_rows({_array: array, _ref_grid: grid_ref}));
+//const Rows = render_rows({_array: array, _ref_grid: grid_ref})
 
   return (
     <div>
@@ -238,13 +262,12 @@ function Table() {
       </div>
     <table >
       <tbody>
-      {Rows}
+      
+    { render_rows({_array: array, _ref_grid: grid_ref})}
   </tbody>
     </table>
-     <Modal isPaused={state.current.is_paused} handle_toggle={() => pause_play()}>
-        <h2>Modal Content</h2>
-       
-      </Modal>
+     <Modal isPaused={state.current.is_paused} pause_play={pause_play} reset={reset} ended={ended} state={state.current}/>
+    
     </div>
   );
 } 

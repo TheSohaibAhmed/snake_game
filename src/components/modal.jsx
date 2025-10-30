@@ -2,8 +2,8 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import useLocalStorageListener from "./useLocalStorage";
 
-export default function Modal({ handle_toggle, children }) {
-  const [isOpen, setOpen] = useLocalStorageListener("pause");
+export default function Modal({ pause_play, reset, ended, state, children }) {
+  const [isOpen, setOpen] = useLocalStorageListener("pause", true);
   console.log("Is open @ modal", isOpen)
  
   // modal receioves state
@@ -14,7 +14,7 @@ export default function Modal({ handle_toggle, children }) {
   const [isDragging, setIsDragging] = useState(false);
   const startYRef = useRef(null);
   
-  const onClose = () => {setOpen(!isOpen); handle_toggle()}
+  const onClose = () => {if (isOpen) setOpen(false); pause_play() }
  
   const handle_keydown = useCallback(
     function handle_keydown(e) {
@@ -45,7 +45,7 @@ export default function Modal({ handle_toggle, children }) {
     }
   };
   
-  const handle_stop = useCallback((e) => e.stopPropagation(), []);
+  const handle_stop = useCallback((e) => setOpen(false), []);
 
   useEffect(() => {
     document.addEventListener("keydown", handle_keydown);
@@ -56,13 +56,15 @@ export default function Modal({ handle_toggle, children }) {
     };
   }, [isOpen, onClose, handle_keydown]);
 
-  
+  useEffect(() => {
+    if (ended && !isOpen)  setOpen(!isOpen);
+  }, [ended, setOpen, isOpen])
   
   
   if (!isOpen) return null;
 
   const class_blurred_bg ="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40";
-  const class_mobile_friendly_popup ="bg-white rounded-t-2xl sm:rounded-lg shadow-lg p-6 w-full sm:w-[90%] sm:max-w-md transform transition-all duration-300 animate-fadeInUp fixed bottom-0 sm:relative";
+  const class_mobile_friendly_popup ="bg-black/90 rounded-t-2xl sm:rounded-lg shadow-lg p-6 w-full sm:w-[90%] sm:max-w-md transform transition-all duration-300 animate-fadeInUp fixed bottom-0 sm:relative";
   
   
     return createPortal(  <div className={class_blurred_bg} onClick={onClose}>
@@ -82,7 +84,15 @@ export default function Modal({ handle_toggle, children }) {
         </div>
 
         <div className="overflow-y-auto max-h-[80vh] sm:max-h-[90vh]">
-          {children}
+          {ended ? <div className="flex flex-col gap-4 h-full">
+            <h2 className=" font-display text-2xl mx-auto text-center font-italic">Ooof!</h2>
+            <h3>Final score: {(81 - state.speed)} /100</h3>
+            <button className="animate-pulse" onClick={() => reset()}>Restart</button>
+          </div>: <div className="flex flex-col gap-4 h-full">
+            <h2 className="animate-pulse font-display text-2xl mx-auto text-center font-italic">Paused</h2>
+            <button onClick={(e) => {e.stopPropagation(); pause_play(); setOpen(false)}}>Play</button>
+            <button onClick={() =>{reset()}}>Restart</button>
+          </div>}
         </div>
       </div>
      
