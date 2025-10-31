@@ -33,6 +33,7 @@ export default function MobileController (props) {
     }, [request_permission, handleOrientation])
 
     if (!is_allowed) {
+        alert("Not allowed")
         return (
       <button
         className="px-4 py-2 mt-4 text-white bg-blue-600 rounded"

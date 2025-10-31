@@ -89,10 +89,10 @@ function Table() {
     const {alpha, beta, gamma} = e;
     
 
-    if (beta > 10) window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
-    if (beta < -10) window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
-    if (gamma > 10) window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
-    if (gamma < -10) window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+    if (beta > 10)  state.current.pending_direction = "d"; //window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+    if (beta < -10)  state.current.pending_direction = "u";   //window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
+    if (gamma > 10) state.current.pending_direction ="r"; //window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
+    if (gamma < -10) state.current.pending_direction ="l"; window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
 
     
   }
@@ -271,6 +271,7 @@ function Table() {
       <div className="font-display text-lg text-white flex flex-row justify-between mb-2">
         <span>Score: </span>
          <span>Level: {(81 - state.current.speed)} /100</span>
+         <MobileController onTilt={handleTilt} />
       </div>
     <table >
       <tbody>
@@ -279,7 +280,7 @@ function Table() {
   </tbody>
     </table>
      <Modal isPaused={state.current.is_paused} pause_play={pause_play} reset={reset} ended={ended} state={state.current}/>
-      <MobileController onTilt={handleTilt} />
+      
     </div>
   );
 } 
