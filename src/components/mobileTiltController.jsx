@@ -85,12 +85,12 @@ export default function MobileController (props) {
       </button>
     );
     }
-     return <button
+     return <div><button
         onClick={() =>
           DeviceMotionEvent.requestPermission &&
           DeviceMotionEvent.requestPermission().then((res) => {
             if (res === "granted") {
-                 window.location.reload();
+                 set_permission(true);
                  
             }
            
@@ -98,7 +98,7 @@ export default function MobileController (props) {
         }
       >
         Enable Motion Controls
-      </button>;
+      </button>;</div>
 
 
 }
