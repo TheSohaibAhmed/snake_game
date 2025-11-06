@@ -33,14 +33,14 @@ export default function MobileController (props) {
         alert("none") 
         return; // no gyroscope available
         }
-        console.log(e.rotationRate)
+       
        const { alpha, beta, gamma } = e.rotationRate;
        if (Math.abs(beta) > Math.abs(gamma)) {
             if (beta > ROTATION_THRESHOLD) {
                 console.log("d")
                 onTilt({...e, dir: "d"})
             } else if (beta < -ROTATION_THRESHOLD) {
-                console.log("up")
+                console.log("u")
                 onTilt({...e, dir: "u"})
             } 
        } else {
