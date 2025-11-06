@@ -27,8 +27,8 @@ export default function MobileController (props) {
     // GIVES ACCLERATION. {acceleration, accelerationIncludingGravity, rotationRate, interval}
     
     const handleMotion = useCallback (e => {
-        console.log(e)
-        const ROTATION_THRESHOLD = 0.1;
+       
+        const ROTATION_THRESHOLD = 40;
        if (!e.rotationRate) {
         alert("none") 
         return; // no gyroscope available
