@@ -31,6 +31,7 @@ function Table() {
   const size =  useRef(40);
   const head = useRef({x: 0, y: 0});
   const setHead = (val) => head.current = val;
+  const rot = useRef(0)
   
   // DEFINE
 
@@ -88,6 +89,7 @@ function Table() {
     if (key === "R") reset();
   }
   function handleTilt(e) {
+    rot.current = e
     if (e === "d")  state.current.pending_direction = "d";
      if (e === "u")  state.current.pending_direction = "u";
       if (e === "l")  state.current.pending_direction = "l";
@@ -274,7 +276,7 @@ function Table() {
       <div className="font-display text-lg text-white flex flex-row justify-between mb-2">
         <span>Score: </span>
          <span>Level: {(81 - state.current.speed)} /100</span>
-        
+         <span>rot: {rot.current}</span> 
       </div>
     <table >
       <tbody>
