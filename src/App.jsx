@@ -89,12 +89,12 @@ function Table() {
     if (key === "R") reset();
   }
   function handleTilt(e) {
-    rot.current = e
-    if (e === "d")  state.current.pending_direction = "d";
-     if (e === "u")  state.current.pending_direction = "u";
-      if (e === "l")  state.current.pending_direction = "l";
-       if (e === "r")  state.current.pending_direction = "r";
-
+    const {dir,...rotationRate} = e; 
+    if (dir === "d")  state.current.pending_direction = "d";
+     if (dir === "u")  state.current.pending_direction = "u";
+      if (dir === "l")  state.current.pending_direction = "l";
+       if (dir === "r")  state.current.pending_direction = "r";
+    rot.current = rotationRate
     
 
     

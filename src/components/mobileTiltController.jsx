@@ -32,15 +32,15 @@ export default function MobileController (props) {
        const { alpha, beta, gamma } = e.rotationRate;
        if (Math.abs(beta) > Math.abs(gamma)) {
             if (beta > ROTATION_THRESHOLD) {
-                onTilt("down")
+                onTilt({...e.rotationRate, dir: "d"})
             } else if (beta < -ROTATION_THRESHOLD) {
-                onTilt("up")
+                onTilt({...e.rotationRate, dir: "u"})
             } 
        } else {
             if (gamma > ROTATION_THRESHOLD) {
-             onTilt("r")
+             onTilt({...e.rotationRate, dir: "r"})
             } else if (gamma < -ROTATION_THRESHOLD) {
-                onTilt("l")
+                 onTilt({...e.rotationRate, dir: "l"})
             }
        }
         
