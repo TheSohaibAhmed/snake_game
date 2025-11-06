@@ -3,11 +3,14 @@ import { memo, useCallback, useEffect, useRef, useState } from "react";
 import Modal from "./components/modal.jsx";
 import useLocalStorageListener from "./components/useLocalStorage.js";
 import MobileController from "./components/mobileTiltController.jsx";
+import useScreenOrientation from "./components/onScreenChange.jsx";
   let css_col = " w-3 h-3 bg-gray-600 border-2 border-gray-600 transition transition-all duration-[50] ease-in-out";
 
 export default function App() {
+  
   return (
     <div className="w-screen h-screen flex justify-center items-center">
+     
       <Table />
     </div>
   );
@@ -86,13 +89,12 @@ function Table() {
     if (key === "R") reset();
   }
   function handleTilt(e) {
-    const {alpha, beta, gamma} = e;
-    
+    if (e === "d")  state.current.pending_direction = "d";
+     if (e === "u")  state.current.pending_direction = "u";
+      if (e === "l")  state.current.pending_direction = "l";
+       if (e === "r")  state.current.pending_direction = "r";
 
-    if (beta > 10)  state.current.pending_direction = "d"; //window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
-    if (beta < -10)  state.current.pending_direction = "u";   //window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
-    if (gamma > 10) state.current.pending_direction ="r"; //window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
-    if (gamma < -10) state.current.pending_direction ="l"; window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+    
 
     
   }
@@ -239,7 +241,7 @@ function Table() {
   }, [move]);
   
   useEffect(() => {
-    console.log('happened')
+   
     if (ended) {
       state.current.is_paused=true;
       setPaused(false)
@@ -268,10 +270,12 @@ function Table() {
 
   return (
     <div>
+       <MobileController onTilt={handleTilt} onOrientation={undefined}/>
+       
       <div className="font-display text-lg text-white flex flex-row justify-between mb-2">
         <span>Score: </span>
          <span>Level: {(81 - state.current.speed)} /100</span>
-         <MobileController onTilt={handleTilt} />
+        
       </div>
     <table >
       <tbody>
