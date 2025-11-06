@@ -27,6 +27,7 @@ export default function MobileController (props) {
     // GIVES ACCLERATION. {acceleration, accelerationIncludingGravity, rotationRate, interval}
     
     const handleMotion = useCallback (e => {
+        console.log(e)
         const ROTATION_THRESHOLD = 0.1;
        if (!e.rotationRate) {
         alert("none") 
@@ -58,7 +59,9 @@ export default function MobileController (props) {
         if (!has_motion && !is_allowed) {
              DeviceMotionEvent.requestPermission().then((res) => {
                 console.log("Requested res: ", res);
-                set_permission(true)
+                set_permission(true);
+                window.addEventListener("devicemotion", handleMotion);
+                window.addEventListener("deviceorientation", handleOrientation)
              })
         }
         
@@ -104,7 +107,7 @@ export default function MobileController (props) {
         }
       >
         Enable Motion Controls
-      </button>;</div>
+      </button></div>
 
 
 }
