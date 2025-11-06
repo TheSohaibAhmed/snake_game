@@ -28,9 +28,11 @@ export default function MobileController (props) {
     
     const handleMotion = useCallback (e => {
         const ROTATION_THRESHOLD = 0.1;
-       if (!e.rotationRate) {alert("none") 
+       if (!e.rotationRate) {
+        alert("none") 
         return; // no gyroscope available
         }
+        console.log(e.rotationRate)
        const { alpha, beta, gamma } = e.rotationRate;
        if (Math.abs(beta) > Math.abs(gamma)) {
             if (beta > ROTATION_THRESHOLD) {

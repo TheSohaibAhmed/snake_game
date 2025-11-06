@@ -31,7 +31,7 @@ function Table() {
   const size =  useRef(40);
   const head = useRef({x: 0, y: 0});
   const setHead = (val) => head.current = val;
-  const rot = useRef(0)
+  const rot = useRef()
   
   // DEFINE
 
