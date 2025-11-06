@@ -55,6 +55,12 @@ export default function MobileController (props) {
         const has_orientation =  typeof DeviceOrientationEvent !== undefined && typeof DeviceOrientationEvent.request_permission === "function"
         const has_motion = typeof DeviceMotionEvent !== undefined && typeof DeviceMotionEvent.request_permission === "function"
         console.log("We have motion:", has_motion)
+        if (!has_motion && !is_allowed) {
+             DeviceMotionEvent.requestPermission().then((res) => {
+                console.log("Requested res: ", res);
+                set_permission(true)
+             })
+        }
         
     }, [handleOrientation, handleMotion, is_allowed, set_permission])
    
