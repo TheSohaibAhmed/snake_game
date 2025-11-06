@@ -55,29 +55,16 @@ export default function MobileController (props) {
         const has_orientation =  typeof DeviceOrientationEvent !== undefined && typeof DeviceOrientationEvent.request_permission === "function"
         const has_motion = typeof DeviceMotionEvent !== undefined && typeof DeviceMotionEvent.request_permission === "function"
         console.log("We have motion:", has_motion)
-        if (has_motion) {
-            const response = await DeviceMotionEvent.request_permission();
-            if (response === "granted") {
-                
-                window.addEventListener("devicemotion", handleMotion);
-                window.addEventListener("deviceorientation", handleOrientation);
-                 set_permission(true);
-            }
-        } else {
-             // Non-iOS browsers (Android, desktop)
-                window.addEventListener("devicemotion", handleMotion);
-                window.addEventListener("deviceorientation", handleOrientation);
-                set_permission(true);
-        }
+        
     }, [handleOrientation, handleMotion, is_allowed, set_permission])
    
    
     useEffect (() => {
-        request_permission()
+        if (!is_allowed) request_permission()
         return () =>{
             window.removeEventListener("devicemotion", handleMotion);
             window.removeEventListener("deviceorientation", handleOrientation)}
-    }, [request_permission, handleOrientation, handleMotion])
+    }, [request_permission, handleOrientation, handleMotion, is_allowed])
 
     if (!is_allowed) {
         
@@ -98,7 +85,20 @@ export default function MobileController (props) {
       </button>
     );
     }
-     return null;
+     return <button
+        onClick={() =>
+          DeviceMotionEvent.requestPermission &&
+          DeviceMotionEvent.requestPermission().then((res) => {
+            if (res === "granted") {
+                 window.location.reload();
+                 
+            }
+           
+          })
+        }
+      >
+        Enable Motion Controls
+      </button>;
 
 
 }
