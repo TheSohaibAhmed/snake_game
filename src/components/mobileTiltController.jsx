@@ -43,18 +43,24 @@ export default function MobileController (props) {
        let highest = getHighestRotationValue(e.rotationRate)
        let { key, value } = highest
        if (key === "beta" && value < -ROTATION_THRESHOLD) {
-            console.log("d"); 
-            onTilt({...e, dir: "d"})
+            console.log("l"); 
+            onTilt({...e, dir: "l"})
        } else if (key === "beta" && value > ROTATION_THRESHOLD) {
-              console.log("u"); 
-              onTilt({...e, dir: "u"})
+              console.log("r"); 
+              onTilt({...e, dir: "r"})
        } else if (key ==="gamma" &&  value < -ROTATION_THRESHOLD) {
-              console.log("l"); 
-              onTilt({...e, dir: "l"})        
+              console.log("r"); 
+              onTilt({...e, dir: "r"})        
        } else if (key === "gamma" && value > ROTATION_THRESHOLD) {
-            console.log("r"); 
-            onTilt({...e, dir: "r"})
-       } 
+                console.log("l"); 
+                onTilt({...e, dir: "l"})
+       } else if (key === "alpha" && value < -ROTATION_THRESHOLD) {
+                console.log("-alpha")
+                onTilt({...e, dir: "d"})
+       } else if (key === "alpha" && value > ROTATION_THRESHOLD) {
+                console.log("alpha")
+                onTilt({...e, dir: "u"})
+       }
         
     },[])
     
