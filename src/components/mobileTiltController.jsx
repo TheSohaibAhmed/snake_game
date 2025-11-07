@@ -55,11 +55,11 @@ export default function MobileController (props) {
                 console.log("l"); 
                 onTilt({...e, dir: "l"})
        } else if (key === "alpha" && value < -ROTATION_THRESHOLD) {
-                console.log("-alpha")
-                onTilt({...e, dir: "d"})
-       } else if (key === "alpha" && value > ROTATION_THRESHOLD) {
-                console.log("alpha")
+                console.log("u")
                 onTilt({...e, dir: "u"})
+       } else if (key === "alpha" && value > ROTATION_THRESHOLD) {
+                console.log("d")
+                onTilt({...e, dir: "d"})
        }
         
     },[])

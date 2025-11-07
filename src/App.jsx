@@ -3,10 +3,13 @@ import { memo, useCallback, useEffect, useRef, useState } from "react";
 import Modal from "./components/modal.jsx";
 import useLocalStorageListener from "./components/useLocalStorage.js";
 import MobileController from "./components/mobileTiltController.jsx";
-import useScreenOrientation from "./components/onScreenChange.jsx";
-  let css_col = " w-3 h-3 bg-gray-600 border-2 border-gray-600 transition transition-all duration-[50] ease-in-out";
+
+let css_col = " w-3 h-3 bg-gray-600 border-2 border-gray-600 transition transition-all duration-[50] ease-in-out";
 
 export default function App() {
+  useEffect(() => {
+
+  }, [])
   
   return (
     <div className="w-screen h-screen flex justify-center items-center">
