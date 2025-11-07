@@ -43,22 +43,22 @@ export default function MobileController (props) {
        let highest = getHighestRotationValue(e.rotationRate)
        let { key, value } = highest
        if (key === "beta" && value < -ROTATION_THRESHOLD) {
-            console.log("l"); 
+            console.log("-B"); 
             onTilt({...e, dir: "l"})
        } else if (key === "beta" && value > ROTATION_THRESHOLD) {
-              console.log("r"); 
+              console.log("B"); 
               onTilt({...e, dir: "r"})
        } else if (key ==="gamma" &&  value < -ROTATION_THRESHOLD) {
-              console.log("r"); 
+              console.log("-G"); 
               onTilt({...e, dir: "r"})        
        } else if (key === "gamma" && value > ROTATION_THRESHOLD) {
-                console.log("l"); 
+                console.log("G"); 
                 onTilt({...e, dir: "l"})
        } else if (key === "alpha" && value < -ROTATION_THRESHOLD) {
-                console.log("u")
+                console.log("-A")
                 onTilt({...e, dir: "u"})
        } else if (key === "alpha" && value > ROTATION_THRESHOLD) {
-                console.log("d")
+                console.log("A")
                 onTilt({...e, dir: "d"})
        }
         
@@ -92,6 +92,7 @@ export default function MobileController (props) {
         
         return (
       <button
+        className={is_allowed? "hidden": "md:hidden"}
         onClick={() =>
           DeviceMotionEvent.requestPermission &&
           DeviceMotionEvent.requestPermission().then((res) => {

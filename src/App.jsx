@@ -4,7 +4,7 @@ import Modal from "./components/modal.jsx";
 import useLocalStorageListener from "./components/useLocalStorage.js";
 import MobileController from "./components/mobileTiltController.jsx";
 
-let css_col = " w-3 h-3 bg-gray-600 border-2 border-gray-600 transition transition-all duration-[50] ease-in-out";
+  let css_col = " w-3 h-3 bg-gray-600 border-2 border-gray-600 transition transition-all duration-[50] ease-in-out";
 
 export default function App() {
   useEffect(() => {
@@ -39,12 +39,8 @@ function Table() {
   // DEFINE
 
   let array = useMemo(() =>  Array(size.current).fill(undefined))
-  let rows = [];
-  let columns = [...array];
   //UI variables
   let css_row = "min-w-3 min-h-3 w-3 h-3";
-  //let css_col = " w-3 h-3 bg-pink-500  border border-black";
-  let css_active = " !bg-green-500";
   // Mappers
   const grid_ref = useRef([...array]);
   // Game variables;
@@ -186,10 +182,6 @@ function Table() {
     if (state.current.is_paused) pause_play()
 
   }
-  //Initializations
-  
- 
-
 
 // Key events
  useLayoutEffect(() => {
@@ -197,35 +189,7 @@ function Table() {
     return () => window.removeEventListener("keydown", handler_keypress);
  },[handler_keypress, grid_ref.current ]);
 
-//  useLayoutEffect(() => {
-//     // Note: update tis to use requestAnimationFrame for smoother movement
-//     // -> Definitions
-//     let effect_speed, time_elapsed, ID_move, ID_checkSpeed;
-//     effect_speed = state.current.speed;
-//     //  -> Method definitions
-//     function change_effect_speed  ()  {
-//         if (effect_speed !== state.current.speed) {
-//           effect_speed = state.current.speed;
-//           stopLoop();
-//           startLoop();
-//           console.log("speed changed to ", effect_speed)
-//         }
-//     }
-//     function stopLoop () {
-//       clearInterval(ID_move);
-//       clearInterval(ID_checkSpeed);
-//     }
-//     function startLoop () {
-//       ID_move = setInterval(() => { move()  }, effect_speed);
-//       ID_checkSpeed = setInterval(change_effect_speed, effect_speed);
-//     } 
-//     // -> -> Begin
-//     startLoop();
-//     return () => {
-//       stopLoop();
-//     }
-  
-//  }, [move]) 
+
   useLayoutEffect(() => {
     let ID_animation, start, interval;
     start = performance.now();
@@ -269,17 +233,17 @@ function Table() {
     );
   });
  }
-//  const Rows = useMemo( () => render_rows({_array: array, _ref_grid: grid_ref}));
-//const Rows = render_rows({_array: array, _ref_grid: grid_ref})
+
 
   return (
     <div>
-       <MobileController onTilt={handleTilt} onOrientation={undefined}/>
+      
        
       <div className="font-display text-lg text-white flex flex-row justify-between mb-2">
-        <span>Score: </span>
-         <span>Level: {(81 - state.current.speed)} /100</span>
-         <span>rot: {rot.current}</span> 
+         <MobileController onTilt={handleTilt} onOrientation={undefined}/>
+        {/* <span>Score: </span>
+         <span>Level: {(81 - state.current.speed)} /100</span> */}
+         <button className="md:hidden" onClick={() => {pause_play()}}>{state.current.is_paused ? "play" : "pause"}</button> 
       </div>
     <table >
       <tbody>
