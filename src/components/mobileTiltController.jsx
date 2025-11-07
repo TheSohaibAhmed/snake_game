@@ -27,30 +27,34 @@ export default function MobileController (props) {
     // GIVES ACCLERATION. {acceleration, accelerationIncludingGravity, rotationRate, interval}
     
     const handleMotion = useCallback (e => {
-       
-        const ROTATION_THRESHOLD = 80;
-       if (!e.rotationRate) {
-        alert("none") 
-        return; // no gyroscope available
+       function getHighestRotationValue(obj) {
+        // Get all key-value pairs and reduce to find the one with the largest absolute value
+        return Object.entries(obj).reduce((max, [key, value]) => {
+            return Math.abs(value) > Math.abs(max.value)
+            ? { key, value }
+            : max;
+        }, { key: null, value: 0 });
         }
+
+       const ROTATION_THRESHOLD = 80;
+       if (!e.rotationRate) return; 
        
-       const { alpha, beta, gamma } = e.rotationRate;
-       if (Math.abs(beta) > Math.abs(gamma)) {
-            if (beta > ROTATION_THRESHOLD) {
-                console.log("d")
-                onTilt({...e, dir: "d"})
-            } else if (beta < -ROTATION_THRESHOLD) {
-                console.log("u")
-                onTilt({...e, dir: "u"})
-            } 
-       } else {
-            if (gamma > ROTATION_THRESHOLD) {
-             onTilt({...e, dir: "r"}); console.log("r")
-            } else if (gamma < -ROTATION_THRESHOLD) {
-                console.log("l")
-                 onTilt({...e, dir: "l"})
-            }
-       }
+       
+       let highest = getHighestRotationValue(e.rotationRate)
+       let { key, value } = highest
+       if (key === "beta" && value < -ROTATION_THRESHOLD) {
+            console.log("d"); 
+            onTilt({...e, dir: "d"})
+       } else if (key === "beta" && value > ROTATION_THRESHOLD) {
+              console.log("u"); 
+              onTilt({...e, dir: "u"})
+       } else if (key ==="gamma" &&  value < -ROTATION_THRESHOLD) {
+              console.log("l"); 
+              onTilt({...e, dir: "l"})        
+       } else if (key === "gamma" && value > ROTATION_THRESHOLD) {
+            console.log("r"); 
+            onTilt({...e, dir: "r"})
+       } 
         
     },[])
     
